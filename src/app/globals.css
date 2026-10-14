@@ -1,0 +1,175 @@
+@import 'tailwindcss';
+
+/* Kruispunt design systeem: zes kleuren, twee lettertypes, één bewegingstaal.
+   Hagrid en Sofia Pro lopen via Adobe Fonts; Bricolage Grotesque en Figtree zijn de stand-ins. */
+@theme {
+  --color-nacht: #1b2c5e;
+  --color-blauw: #294184;
+  --color-mint: #00dd9e;
+  --color-mint-soft: #d6f9ef;
+  --color-papier: #f3f5fa;
+  --color-hemel: #6b88c9;
+  --color-hemel-soft: #e4eaf6;
+  --color-signaal: #ff7a1a;
+  --color-signaal-soft: #ffeadb;
+  --color-groen: #007a57;
+  --color-rood: #c4321f;
+  --color-rood-soft: #fbe6e3;
+  --color-lijn: #dde3f0;
+  --color-inkt: #1b2c5e;
+  --color-inkt-zacht: #4f5c82;
+
+  --font-display: var(--font-bricolage), 'Hagrid', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-figtree), 'Sofia Pro', ui-sans-serif, system-ui, sans-serif;
+
+  --radius-veld: 6px;
+  --radius-kaart: 12px;
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+
+  --animate-reveal: reveal 250ms var(--ease-out) both;
+  --animate-pop: pop 200ms var(--ease-out) both;
+
+  @keyframes reveal {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes pop {
+    from {
+      opacity: 0;
+      transform: scale(0.97);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+    overflow-x: clip; /* de gesloten menulade (buiten beeld) mag de pagina niet verbreden */
+  }
+  body {
+    @apply bg-papier font-sans text-[15px] leading-[1.55] text-inkt antialiased;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-display text-nacht;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-blauw);
+    outline-offset: 2px;
+  }
+  ::selection {
+    background: var(--color-mint-soft);
+  }
+  input,
+  select,
+  textarea {
+    font-size: 16px; /* geen auto-zoom op iOS */
+  }
+  @media (min-width: 768px) {
+    input,
+    select,
+    textarea {
+      font-size: 15px;
+    }
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex h-10 cursor-pointer items-center justify-center gap-2 rounded-full px-5 text-sm font-semibold whitespace-nowrap select-none disabled:cursor-not-allowed disabled:opacity-50;
+    transition:
+      transform 160ms var(--ease-out),
+      background-color 150ms ease,
+      color 150ms ease,
+      border-color 150ms ease;
+  }
+  .btn:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+  .btn-primary {
+    @apply bg-mint text-nacht;
+  }
+  .btn-secondary {
+    @apply border border-lijn bg-white text-nacht;
+  }
+  .btn-ghost {
+    @apply text-inkt-zacht;
+  }
+  .btn-danger {
+    @apply border border-rood/30 bg-white text-rood;
+  }
+  .btn-sm {
+    @apply h-8 px-3.5 text-[13px];
+  }
+  .btn-icon {
+    @apply h-9 w-9 px-0;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .btn-primary:hover:not(:disabled) {
+      background-color: #00c78e;
+    }
+    .btn-secondary:hover:not(:disabled) {
+      @apply border-hemel bg-papier;
+    }
+    .btn-ghost:hover:not(:disabled) {
+      @apply bg-hemel-soft text-nacht;
+    }
+    .btn-danger:hover:not(:disabled) {
+      @apply bg-rood-soft;
+    }
+  }
+
+  .field {
+    @apply block w-full rounded-veld border border-lijn bg-white px-3 py-2 text-inkt placeholder:text-inkt-zacht/60;
+    transition:
+      border-color 150ms ease,
+      box-shadow 150ms ease;
+  }
+  .field:focus {
+    @apply border-blauw outline-none;
+    box-shadow: 0 0 0 3px rgb(41 65 132 / 0.15);
+  }
+  .label {
+    @apply mb-1.5 block text-[13px] font-semibold text-nacht;
+  }
+  .eyebrow {
+    @apply text-[12px] font-semibold tracking-[0.08em] text-inkt-zacht uppercase;
+  }
+  .card {
+    @apply min-w-0 rounded-kaart border border-lijn bg-white;
+  }
+  .link {
+    @apply font-semibold text-groen underline-offset-2;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .link:hover {
+      @apply underline;
+    }
+  }
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    transition-property: opacity, color, background-color, border-color !important;
+  }
+}
