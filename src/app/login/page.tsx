@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import { getProfile } from '@/lib/auth'
+import { isConfigured } from '@/lib/env'
 import { Logo } from '@/components/ui'
 import { LoginForm } from './login-form'
 
@@ -38,7 +39,17 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
               Je account is nog niet aan een klant gekoppeld. Neem contact op met Studio Kruispunt.
             </p>
           )}
-          <LoginForm />
+          {isConfigured() ? (
+            <LoginForm />
+          ) : (
+            <div className="rounded-kaart border border-signaal/50 bg-signaal-soft p-4 text-[14px] text-[#9a4300]">
+              <p className="font-semibold">De CRM is nog niet gekoppeld aan de database.</p>
+              <p className="mt-1">
+                Zet <code>NEXT_PUBLIC_SUPABASE_URL</code>, <code>NEXT_PUBLIC_SUPABASE_ANON_KEY</code> en <code>SUPABASE_SERVICE_ROLE_KEY</code> in Vercel en
+                deploy opnieuw.
+              </p>
+            </div>
+          )}
         </div>
       </section>
     </main>

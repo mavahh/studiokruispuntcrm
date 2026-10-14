@@ -1,10 +1,12 @@
 import 'server-only'
 import { cache } from 'react'
 import { redirect } from 'next/navigation'
+import { isConfigured } from './env'
 import { createClient } from './supabase/server'
 import type { Profile } from './types'
 
 export const getProfile = cache(async (): Promise<Profile | null> => {
+  if (!isConfigured()) return null
   const supabase = await createClient()
   const {
     data: { user },
