@@ -47,7 +47,7 @@ Importeer de repo in Vercel (framework: Next.js) en zet deze environment variabl
 | Variabele | Waarde |
 | --- | --- |
 | `NEXT_PUBLIC_SUPABASE_URL` | Supabase → Project Settings → API → URL |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | anon / publishable key |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | publishable key (of de oude `NEXT_PUBLIC_SUPABASE_ANON_KEY`) |
 | `SUPABASE_SERVICE_ROLE_KEY` | service_role / secret key (**geheim**, enkel server) |
 | `NEXT_PUBLIC_SITE_URL` | `https://crm.studiokruispunt.be` |
 | `CRON_SECRET` | een lange willekeurige string |
