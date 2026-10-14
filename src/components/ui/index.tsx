@@ -98,22 +98,30 @@ export function Avatar({ name, size = 28 }: { name: string | null | undefined; s
   )
 }
 
+/** Het mint kruis uit het Studio Kruispunt-logo. */
 export function CrossMark({ className = '' }: { className?: string }) {
   return (
-    <svg viewBox="0 0 40 40" aria-hidden="true" className={className} fill="currentColor">
-      <path d="M15 3h10v12h12v10H25v12H15V25H3V15h12z" />
+    <svg viewBox="0 0 483.16 483.16" aria-hidden="true" className={className} fill="currentColor">
+      <polygon points="381.32 0 448.85 178.15 421.36 202.32 367.47 249.69 432.84 324.07 483.16 381.32 305.01 448.85 280.84 421.36 233.48 367.47 159.1 432.84 101.84 483.16 34.31 305.01 61.81 280.84 115.7 233.48 50.32 159.1 0 101.84 178.15 34.31 202.32 61.81 249.69 115.7 324.07 50.32 381.32 0" />
     </svg>
   )
 }
 
-export function Logo({ light = false }: { light?: boolean }) {
+const logoHeights = { sm: 40, md: 52, lg: 84 } as const
+
+/** Volledig logo: wit op donkere vlakken, Kruispunt Blauw op licht. */
+export function Logo({ light = false, size = 'md' }: { light?: boolean; size?: keyof typeof logoHeights }) {
+  const h = logoHeights[size]
   return (
-    <span className="flex items-center gap-2.5">
-      <CrossMark className="h-6 w-6 text-mint" />
-      <span className={`font-display text-[17px] leading-none font-bold ${light ? 'text-white' : 'text-nacht'}`}>
-        Studio Kruispunt
-      </span>
-    </span>
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={light ? '/logo-wit.svg' : '/logo-blauw.svg'}
+      alt="Studio Kruispunt"
+      width={Math.round((h * 738.3) / 483.16)}
+      height={h}
+      className="block shrink-0 self-start"
+      style={{ height: h, width: 'auto' }}
+    />
   )
 }
 

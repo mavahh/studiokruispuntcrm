@@ -24,8 +24,8 @@ async function sendEmail(to: string, msg: Message) {
   const html = `
   <div style="font-family:Arial,sans-serif;background:#F3F5FA;padding:32px">
     <div style="max-width:520px;margin:0 auto;background:#fff;border-radius:12px;overflow:hidden">
-      <div style="background:#1B2C5E;padding:20px 24px;color:#fff;font-weight:700;font-size:16px">
-        <span style="color:#00DD9E">✚</span> Studio Kruispunt
+      <div style="background:#1B2C5E;padding:20px 24px">
+        <img src="${siteUrl()}/logo-wit.png" alt="Studio Kruispunt" width="74" height="48" style="display:block;border:0" />
       </div>
       <div style="padding:24px;color:#1B2C5E">
         <h1 style="font-size:20px;margin:0 0 12px">${escapeHtml(msg.title)}</h1>

@@ -18,7 +18,7 @@ export default async function PortalLayout({ children }: { children: React.React
       <header className="sticky top-0 z-30 bg-nacht pt-[env(safe-area-inset-top)]">
         <div className="mx-auto flex h-14 max-w-[1000px] items-center justify-between gap-3 px-4 md:h-16 md:px-8">
           <Link href="/portaal" className="flex min-w-0 items-center gap-3">
-            <Logo light />
+            <Logo light size="sm" />
             <span className="hidden truncate border-l border-white/20 pl-3 text-[14px] text-white/75 sm:block">{client?.name}</span>
           </Link>
           <div className="flex items-center gap-1">

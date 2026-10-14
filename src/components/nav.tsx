@@ -81,7 +81,7 @@ export function TeamNav({ name, unread, contractAlerts }: { name: string; unread
     <>
       {/* Desktop */}
       <aside className="fixed inset-y-0 left-0 hidden w-60 flex-col bg-nacht px-3 py-5 lg:flex">
-        <Link href="/" className="mb-8 px-3">
+        <Link href="/" className="mb-8 px-3" aria-label="Studio Kruispunt, naar dashboard">
           <Logo light />
         </Link>
         <div className="flex-1 overflow-y-auto">
@@ -92,8 +92,8 @@ export function TeamNav({ name, unread, contractAlerts }: { name: string; unread
 
       {/* Mobiel */}
       <header className="sticky top-0 z-30 flex h-14 items-center justify-between bg-nacht px-4 pt-[env(safe-area-inset-top)] lg:hidden">
-        <Link href="/">
-          <Logo light />
+        <Link href="/" aria-label="Studio Kruispunt, naar dashboard">
+          <Logo light size="sm" />
         </Link>
         <div className="flex items-center gap-1">
           <Link href="/meldingen" className="btn btn-icon relative text-white" aria-label={`Meldingen (${unread} ongelezen)`}>
@@ -119,7 +119,7 @@ export function TeamNav({ name, unread, contractAlerts }: { name: string; unread
         inert={!open}
       >
         <div className="mb-6 flex items-center justify-between px-3">
-          <Logo light />
+          <Logo light size="sm" />
           <button className="btn btn-icon text-white" aria-label="Menu sluiten" onClick={() => setOpen(false)}>
             <X size={20} />
           </button>
