@@ -15,6 +15,7 @@ Op maat gemaakte CRM voor Studio Kruispunt: klanten, content (posts en video's),
 | **Contracten** | Retainers met looptijd; waarschuwing vanaf 45 dagen voor het einde; verlengen in één klik |
 | **Omzet & winst** | Per kwartaal en per jaar: retainers + bevestigde offertes − kosten; per klant; offertes en kosten beheren |
 | **Klantportaal** | Klant logt in met een login die jullie aanmaken, ziet enkel eigen content, bekijkt via Drive, geeft feedback, keurt goed of vraagt aanpassingen |
+| **Outreach** | Leads (handmatig of CSV-import), pipeline *Nieuw → Gecontacteerd → Opvolgen → Gesprek → Offerte → Gewonnen/Verloren*, e-mails vanuit de CRM met sjablonen of een persoonlijke AI-mail (Claude), telefoon/bezoek loggen met resultaat, automatische opvolgdatum en dagelijkse herinnering, lead omzetten naar klant |
 | **Meldingen** | In de app + e-mail: klantfeedback, goedkeuring, toegewezen taken, content klaar voor feedback (naar de klant), dagelijkse herinneringen (deadlines, aflopende contracten) |
 
 Alle bedragen zijn excl. btw.
@@ -34,7 +35,7 @@ npm run dev
 
 ## Productie: Supabase
 
-1. **Schema:** voer `supabase/migrations/20261014000000_schema.sql` uit in de SQL Editor van je Supabase-project (of `npx supabase link` + `npx supabase db push`).
+1. **Schema:** voer `supabase/migrations/20261014000000_schema.sql` en daarna `supabase/migrations/20261015000000_outreach.sql` uit in de SQL Editor van je Supabase-project (of `npx supabase link` + `npx supabase db push`).
 2. **Registratie uitzetten:** *Authentication → Sign In / Providers →* zet **Allow new users to sign up** uit. Laat de e-mailprovider aan. Accounts worden enkel door jullie aangemaakt.
 3. **Site URL:** *Authentication → URL Configuration →* `https://crm.studiokruispunt.be`.
 4. **Teamaccounts** (Liam en Cedric): zet de productie-keys in `.env.local` en draai `npm run teamlid -- <email> "<naam>" <wachtwoord>`, één keer per persoon.
@@ -51,6 +52,8 @@ Importeer de repo in Vercel (framework: Next.js) en zet deze environment variabl
 | `SUPABASE_SERVICE_ROLE_KEY` | service_role / secret key (**geheim**, enkel server) |
 | `NEXT_PUBLIC_SITE_URL` | `https://crm.studiokruispunt.be` |
 | `CRON_SECRET` | een lange willekeurige string |
+| `OUTREACH_FROM` | afzenderadres voor outreach-mails, bv. `hallo@studiokruispunt.be` (domein verifiëren in Resend) |
+| `ANTHROPIC_API_KEY` | optioneel, voor AI-mails per lead (console.anthropic.com) |
 | `RESEND_API_KEY` | optioneel, voor e-mailmeldingen |
 | `EMAIL_FROM` | bv. `Studio Kruispunt CRM <crm@studiokruispunt.be>` (domein verifiëren in Resend) |
 

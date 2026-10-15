@@ -1,13 +1,17 @@
 import type {
+  ActivityType,
   ClientStatus,
   ContentStatus,
   ContentType,
   ContractStatus,
   ExpenseCategory,
+  LeadStatus,
+  Outcome,
   Priority,
   ProjectStatus,
   QuoteStatus,
   TaskStatus,
+  TemplateKind,
 } from './types'
 
 // Tone bepaalt de kleur van de badge (zie Badge-component).
@@ -85,6 +89,43 @@ export const EXPENSE_CATEGORIES: { value: ExpenseCategory; label: string }[] = [
   { value: 'verplaatsing', label: 'Verplaatsing' },
   { value: 'overig', label: 'Overig' },
 ]
+
+export const LEAD_STATUSES: Option<LeadStatus>[] = [
+  { value: 'nieuw', label: 'Nieuw', tone: 'muted' },
+  { value: 'gecontacteerd', label: 'Gecontacteerd', tone: 'neutral' },
+  { value: 'opvolgen', label: 'Opvolgen', tone: 'signal' },
+  { value: 'gesprek', label: 'Gesprek gepland', tone: 'blue' },
+  { value: 'offerte', label: 'Offerte', tone: 'blue' },
+  { value: 'gewonnen', label: 'Gewonnen', tone: 'mint' },
+  { value: 'verloren', label: 'Verloren', tone: 'danger' },
+]
+
+export const OUTCOMES: Option<Outcome>[] = [
+  { value: 'geen_antwoord', label: 'Geen antwoord', tone: 'muted' },
+  { value: 'terugbellen', label: 'Terugbellen', tone: 'signal' },
+  { value: 'interesse', label: 'Interesse', tone: 'blue' },
+  { value: 'afspraak', label: 'Afspraak gemaakt', tone: 'mint' },
+  { value: 'geen_interesse', label: 'Geen interesse', tone: 'danger' },
+]
+
+export const ACTIVITY_LABELS: Record<ActivityType, string> = {
+  email: 'E-mail',
+  telefoon: 'Telefoon',
+  bezoek: 'Bezoek',
+  notitie: 'Notitie',
+  status: 'Status',
+}
+
+export const TEMPLATE_KINDS: { value: TemplateKind; label: string }[] = [
+  { value: 'eerste', label: 'Eerste contact' },
+  { value: 'opvolging', label: 'Opvolging' },
+  { value: 'na_gesprek', label: 'Na gesprek' },
+]
+
+export const SECTORS = ['Horeca', 'Retail', 'Kapper / beauty', 'Sport & fitness', 'Bouw & renovatie', 'Zorg & welzijn', 'Vrije beroepen', 'Vrije tijd', 'Andere'] as const
+
+/** Hoeveel dagen na een contactmoment we standaard opvolgen. */
+export const FOLLOW_UP_DAYS = { email: 4, geen_antwoord: 3, terugbellen: 2, interesse: 3, afspraak: 1 } as const
 
 // Binnen hoeveel dagen een contract als "loopt bijna af" telt.
 export const CONTRACT_WARNING_DAYS = 45

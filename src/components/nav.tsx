@@ -3,13 +3,14 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { Bell, Clapperboard, FileSignature, FolderKanban, LayoutDashboard, ListChecks, LogOut, Menu, PiggyBank, Users, X } from 'lucide-react'
+import { Bell, Clapperboard, FileSignature, FolderKanban, LayoutDashboard, ListChecks, LogOut, Megaphone, Menu, PiggyBank, Users, X } from 'lucide-react'
 import { logoutAction } from '@/actions/account'
 import { Avatar, Logo } from '@/components/ui'
 
 const items = [
   { href: '/', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/klanten', label: 'Klanten', icon: Users },
+  { href: '/outreach', label: 'Outreach', icon: Megaphone },
   { href: '/content', label: 'Content', icon: Clapperboard },
   { href: '/projecten', label: 'Projecten', icon: FolderKanban },
   { href: '/taken', label: 'Mijn taken', icon: ListChecks },
@@ -21,7 +22,7 @@ function isActive(path: string, href: string) {
   return href === '/' ? path === '/' : path === href || path.startsWith(`${href}/`)
 }
 
-function NavLinks({ unread, contractAlerts, onNavigate }: { unread: number; contractAlerts: number; onNavigate?: () => void }) {
+function NavLinks({ unread, contractAlerts, followUps, onNavigate }: { unread: number; contractAlerts: number; followUps: number; onNavigate?: () => void }) {
   const path = usePathname()
   const link = (href: string, label: string, Icon: typeof Bell, badge?: number, badgeTone = 'bg-mint text-nacht') => {
     const active = isActive(path, href)
@@ -43,7 +44,9 @@ function NavLinks({ unread, contractAlerts, onNavigate }: { unread: number; cont
   }
   return (
     <nav className="grid gap-0.5" aria-label="Hoofdmenu">
-      {items.map((i) => link(i.href, i.label, i.icon, i.href === '/contracten' ? contractAlerts : undefined, 'bg-signaal text-nacht'))}
+      {items.map((i) =>
+        link(i.href, i.label, i.icon, i.href === '/contracten' ? contractAlerts : i.href === '/outreach' ? followUps : undefined, 'bg-signaal text-nacht'),
+      )}
       <div className="my-3 h-px bg-white/10" />
       {link('/meldingen', 'Meldingen', Bell, unread)}
     </nav>
@@ -69,7 +72,7 @@ function UserBlock({ name }: { name: string }) {
   )
 }
 
-export function TeamNav({ name, unread, contractAlerts }: { name: string; unread: number; contractAlerts: number }) {
+export function TeamNav({ name, unread, contractAlerts, followUps }: { name: string; unread: number; contractAlerts: number; followUps: number }) {
   const [open, setOpen] = useState(false)
   const path = usePathname()
   useEffect(() => setOpen(false), [path])
@@ -85,7 +88,7 @@ export function TeamNav({ name, unread, contractAlerts }: { name: string; unread
           <Logo light />
         </Link>
         <div className="flex-1 overflow-y-auto">
-          <NavLinks unread={unread} contractAlerts={contractAlerts} />
+          <NavLinks unread={unread} contractAlerts={contractAlerts} followUps={followUps} />
         </div>
         <UserBlock name={name} />
       </aside>
@@ -125,7 +128,7 @@ export function TeamNav({ name, unread, contractAlerts }: { name: string; unread
           </button>
         </div>
         <div className="flex-1 overflow-y-auto">
-          <NavLinks unread={unread} contractAlerts={contractAlerts} onNavigate={() => setOpen(false)} />
+          <NavLinks unread={unread} contractAlerts={contractAlerts} followUps={followUps} onNavigate={() => setOpen(false)} />
         </div>
         <UserBlock name={name} />
       </aside>
