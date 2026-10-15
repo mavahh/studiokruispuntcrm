@@ -89,5 +89,31 @@ export async function GET(request: NextRequest) {
     sent++
   }
 
+  // Outreach: leads die vandaag (of eerder) opgevolgd moeten worden
+  const { data: leads } = await admin
+    .from('leads')
+    .select('id, business_name, next_follow_up, owner_id')
+    .in('status', ['nieuw', 'gecontacteerd', 'opvolgen', 'gesprek', 'offerte'])
+    .eq('do_not_contact', false)
+    .lte('next_follow_up', today)
+  const byOwner = new Map<string, { id: string; business_name: string }[]>()
+  for (const l of leads ?? []) {
+    for (const owner of l.owner_id ? [l.owner_id as string] : team) {
+      if (!byOwner.has(owner)) byOwner.set(owner, [])
+      byOwner.get(owner)!.push(l)
+    }
+  }
+  // Eén samenvattende melding per persoon per dag, in plaats van één per lead.
+  for (const [owner, list] of byOwner) {
+    const names = list.map((l) => l.business_name)
+    await notify([owner], {
+      title: `${list.length} ${list.length === 1 ? 'lead' : 'leads'} opvolgen vandaag`,
+      body: names.slice(0, 5).join(', ') + (names.length > 5 ? ` en nog ${names.length - 5}` : ''),
+      link: '/outreach',
+      dedupeKey: `outreach-${today}`,
+    })
+    sent++
+  }
+
   return NextResponse.json({ ok: true, checked: sent })
 }

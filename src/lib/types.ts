@@ -137,3 +137,50 @@ export type Notification = {
   read_at: string | null
   created_at: string
 }
+
+export type LeadStatus = 'nieuw' | 'gecontacteerd' | 'opvolgen' | 'gesprek' | 'offerte' | 'gewonnen' | 'verloren'
+
+export type Lead = {
+  id: string
+  business_name: string
+  contact_name: string | null
+  email: string | null
+  phone: string | null
+  city: string | null
+  sector: string | null
+  website: string | null
+  instagram: string | null
+  source: string
+  status: LeadStatus
+  owner_id: string | null
+  next_follow_up: string | null
+  last_contacted_at: string | null
+  do_not_contact: boolean
+  notes: string | null
+  client_id: string | null
+  created_at: string
+}
+
+export type ActivityType = 'email' | 'telefoon' | 'bezoek' | 'notitie' | 'status'
+export type Outcome = 'geen_antwoord' | 'terugbellen' | 'interesse' | 'afspraak' | 'geen_interesse'
+
+export type LeadActivity = {
+  id: string
+  lead_id: string
+  type: ActivityType
+  subject: string | null
+  body: string | null
+  outcome: Outcome | null
+  created_by: string | null
+  created_at: string
+}
+
+export type TemplateKind = 'eerste' | 'opvolging' | 'na_gesprek'
+
+export type EmailTemplate = {
+  id: string
+  name: string
+  kind: TemplateKind
+  subject: string
+  body: string
+}

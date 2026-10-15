@@ -4,14 +4,17 @@ import {
   CONTENT_TYPES,
   CONTRACT_STATUSES,
   EXPENSE_CATEGORIES,
+  LEAD_STATUSES,
   PLATFORMS,
   PRIORITIES,
   PROJECT_STATUSES,
   QUOTE_STATUSES,
+  SECTORS,
   TASK_STATUSES,
+  TEMPLATE_KINDS,
 } from '@/lib/constants'
 import { todayISO } from '@/lib/format'
-import type { Client, ContentItem, Contract, Expense, Profile, Project, Quote, Task } from '@/lib/types'
+import type { Client, ContentItem, Contract, EmailTemplate, Expense, Lead, Profile, Project, Quote, Task } from '@/lib/types'
 import { CheckboxGroup, Grid, SelectField, TextArea, TextField } from './ui/fields'
 
 export type Opt = { value: string; label: string }
@@ -183,6 +186,57 @@ export function ExpenseFields({ expense, clients, projects }: { expense?: Partia
         <SelectField label="Klant" name="client_id" options={clients} defaultValue={expense?.client_id} emptyLabel="Algemeen" />
       </Grid>
       <SelectField label="Project" name="project_id" options={projects} defaultValue={expense?.project_id} emptyLabel="Geen project" />
+    </>
+  )
+}
+
+export function LeadFields({ lead, team }: { lead?: Partial<Lead>; team: Opt[] }) {
+  return (
+    <>
+      <Grid>
+        <TextField label="Naam zaak" name="business_name" required defaultValue={lead?.business_name} />
+        <TextField label="Contactpersoon" name="contact_name" defaultValue={lead?.contact_name} placeholder="Voornaam Achternaam" />
+        <TextField label="E-mail" name="email" type="email" defaultValue={lead?.email} />
+        <TextField label="Telefoon" name="phone" type="tel" defaultValue={lead?.phone} />
+        <TextField label="Gemeente" name="city" defaultValue={lead?.city} placeholder="Geel" />
+        <SelectField
+          label="Sector"
+          name="sector"
+          options={[...SECTORS, ...(lead?.sector && !(SECTORS as readonly string[]).includes(lead.sector) ? [lead.sector] : [])].map((s) => ({ value: s, label: s }))}
+          defaultValue={lead?.sector}
+          emptyLabel="Kies een sector"
+        />
+        <TextField label="Instagram" name="instagram" defaultValue={lead?.instagram} placeholder="@account" />
+        <TextField label="Website" name="website" defaultValue={lead?.website} placeholder="www.voorbeeld.be" />
+        <SelectField label="Verantwoordelijke" name="owner_id" options={team} defaultValue={lead?.owner_id} emptyLabel={lead?.id ? "Niemand" : "Ik"} />
+        <TextField label="Volgende opvolging" name="next_follow_up" type="date" defaultValue={lead?.next_follow_up} />
+      </Grid>
+      {!lead?.id && <SelectField label="Status" name="status" options={LEAD_STATUSES} defaultValue="nieuw" />}
+      <TextArea label="Notities" name="notes" defaultValue={lead?.notes} rows={3} placeholder="Wat weet je al over deze zaak? De AI gebruikt dit om de mail persoonlijk te maken." />
+      <label className="flex items-center gap-2 text-[14px]">
+        <input type="checkbox" name="do_not_contact" defaultChecked={lead?.do_not_contact ?? false} />
+        Niet meer contacteren (vroeg om geen mails meer)
+      </label>
+    </>
+  )
+}
+
+export function TemplateFields({ template }: { template?: Partial<EmailTemplate> }) {
+  return (
+    <>
+      <Grid>
+        <TextField label="Naam" name="name" required defaultValue={template?.name} />
+        <SelectField label="Soort" name="kind" options={TEMPLATE_KINDS} defaultValue={template?.kind ?? 'eerste'} />
+      </Grid>
+      <TextField label="Onderwerp" name="subject" required defaultValue={template?.subject} />
+      <TextArea
+        label="Tekst"
+        name="body"
+        required
+        rows={12}
+        defaultValue={template?.body}
+        hint="Invulvelden: {voornaam}, {contact}, {zaak}, {gemeente}, {sector}, {afzender}"
+      />
     </>
   )
 }
